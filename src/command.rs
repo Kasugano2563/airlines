@@ -1,12 +1,12 @@
 use std::process::exit;
 use crate::newgame;
-use crate::saveload;
+// use crate::saveload;
 
 pub fn menu_command(command: &str) {
     // 命令处理逻辑
     match command {
         "help" => {
-            println!("游戏, 版本 0.0.1a\n");
+            println!("Airlines 游戏, 版本 0.0.1a\n");
             println!("----命令列表----\n");
             println!("help  显示该列表");
             println!("new   新建游戏");
@@ -17,9 +17,10 @@ pub fn menu_command(command: &str) {
             newgame::newgame();
             }
         "load" => {
-            if let Some(new_state) = saveload::game_load() {
-                *state = new_state.clone();
-            }
+            //if let Some(new_state) = saveload::game_load() {
+            //    *state = new_state.clone();
+            //}
+            println!("没做");
         }
         "exit" => {
             exit(0);

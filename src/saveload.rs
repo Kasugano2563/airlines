@@ -1,4 +1,4 @@
-use std::{self, fs::File, io::{self, stdout, BufReader, Write}};
+use std::{self, fs::File, io::{self, stdout, Write}};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -20,15 +20,15 @@ fn export_save(config: &Config, filename: &str) -> Result<(), Box<dyn std::error
     Ok(())
 }
 
-fn load_save(filename: &str) -> Result<Config, Box<dyn std::error::Error>> {
-    let filename = format!("{}.yaml", filename);
-    let file = File::open(&filename)?;
-    let reader = BufReader::new(file);
-    let config: Config = serde_yaml::from_reader(reader)?;
-
-    println!("存档 {} 已加载", filename);
-    Ok(config)
-}
+// fn load_save(filename: &str) -> Result<Config, Box<dyn std::error::Error>> {
+//     let filename = format!("{}.yaml", filename);
+//     let file = File::open(&filename)?;
+//     let reader = BufReader::new(file);
+//     let config: Config = serde_yaml::from_reader(reader)?;
+// 
+//     println!("存档 {} 已加载", filename);
+//     Ok(config)
+// }
 
 // 导入/导出文件前端逻辑
 pub fn game_save(config: &Config) {
@@ -63,34 +63,34 @@ pub fn game_save(config: &Config) {
     }
 }
 
-pub fn game_load() -> Option<Config> {
-    loop {
-        println!("加载存档");
-        print!("请输入存档文件名称(.yaml）：");
-        stdout().flush().unwrap();
-
-        let mut load_input: String = String::new();
-        match io::stdin().read_line(&mut load_input) {
-            Ok(_) => {
-                let save_name = load_input.trim();
-                if save_name.is_empty() {
-                    println!("存档文件名称不能为空");
-                } else {
-                    match load_save(save_name) {
-                        Ok(config) => {
-                            println!("加载成功，公司: {}，年份: {}.{}，金钱：{}", config.company_name, config.years, config.month, config.money);
-                            return Some(config);
-                        }
-                        Err(e) => {
-                            eprintln!("加载错误: {}", e);
-                        }
-                    }
-                }
-            }
-            Err(error) => {
-                eprintln!("读取输入时发生错误: {}", error);
-                continue;
-            }
-        }
-    }
-}
+// pub fn game_load() -> Option<Config> {
+//     loop {
+//         println!("加载存档");
+//         print!("请输入存档文件名称(.yaml）：");
+//         stdout().flush().unwrap();
+// 
+//         let mut load_input: String = String::new();
+//         match io::stdin().read_line(&mut load_input) {
+//             Ok(_) => {
+//                 let save_name = load_input.trim();
+//                 if save_name.is_empty() {
+//                     println!("存档文件名称不能为空");
+//                 } else {
+//                     match load_save(save_name) {
+//                         Ok(config) => {
+//                             println!("加载成功，公司: {}，年份: {}.{}，金钱：{}", config.company_name, config.years, config.month, config.money);
+//                             return Some(config);
+//                         }
+//                         Err(e) => {
+//                             eprintln!("加载错误: {}", e);
+//                         }
+//                     }
+//                 }
+//             }
+//             Err(error) => {
+//                 eprintln!("读取输入时发生错误: {}", error);
+//                 continue;
+//             }
+//         }
+//     }
+// }
