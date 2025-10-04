@@ -1,7 +1,7 @@
 use std::io::{self, stdout, Write};
 use crate::saveload::{self, Config};
 
-pub fn newgame() -> Config {
+pub fn newgame(ingame: i64) -> Config {
     let mut company_name: String;
     let years: i64;
     let month: i64 = 1;
@@ -57,6 +57,6 @@ pub fn newgame() -> Config {
         month,
     };
     
-    saveload::game_save(&state);
+    saveload::game_save(&state, ingame);
     state
 }

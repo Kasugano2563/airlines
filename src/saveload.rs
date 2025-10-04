@@ -1,5 +1,6 @@
 use std::{self, fs::File, io::{self, stdout, BufReader, Write}};
 use serde::{Deserialize, Serialize};
+use crate::gameerr;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Config {
@@ -10,7 +11,8 @@ pub struct Config {
 }
 
 // 导入/导出文件内部逻辑
-fn export_save(config: &Config, filename: &str) -> Result<(), Box<dyn std::error::Error>> {
+fn export_save(config: &Config, filename: &str, ingame: i64) -> Result<(), Box<dyn std::error::Error>> {
+    gameerr::broken_save(config.month, ingame);
     let yaml_string: String = serde_yaml::to_string(config)?;
 
     let mut file = File::create(filename)?;
@@ -20,18 +22,19 @@ fn export_save(config: &Config, filename: &str) -> Result<(), Box<dyn std::error
     Ok(())
 }
 
-fn load_save(filename: &str) -> Result<Config, Box<dyn std::error::Error>> {
+fn load_save(filename: &str, ingame: i64) -> Result<Config, Box<dyn std::error::Error>> {
     let filename = format!("{}.yaml", filename);
     let file = File::open(&filename)?;
     let reader = BufReader::new(file);
     let config: Config = serde_yaml::from_reader(reader)?;
 
-    println!("存档 {} 已加载", filename);
+    println!("存档 {} 已加载, 正在校验存档", filename);
+    gameerr::broken_save(config.month, ingame);
     Ok(config)
 }
 
 // 导入/导出文件前端逻辑
-pub fn game_save(config: &Config) {
+pub fn game_save(config: &Config, ingame: i64) {
     let save_name: String;
     
     loop {
@@ -58,12 +61,12 @@ pub fn game_save(config: &Config) {
     }
     
     let filename: String = format!("{}.yaml", save_name);
-    if let Err(e) = export_save(config, &filename) {
+    if let Err(e) = export_save(config, &filename, ingame) {
         eprintln!("导出错误: {}", e);
     }
 }
 
-pub fn game_load() -> Option<Config> {
+pub fn game_load(ingame: i64) -> Option<Config> {
     loop {
         println!("加载存档");
         print!("请输入存档文件名称(.yaml）：");
@@ -76,7 +79,7 @@ pub fn game_load() -> Option<Config> {
                 if save_name.is_empty() {
                     println!("存档文件名称不能为空");
                 } else {
-                    match load_save(save_name) {
+                    match load_save(save_name, ingame) {
                         Ok(config) => {
                             println!("加载成功，公司: {}，年份: {}.{}，金钱：{}", config.company_name, config.years, config.month, config.money);
                             return Some(config);

@@ -1,5 +1,5 @@
 use std::{io::{self, stdout, Write}, process::exit};
-use crate::{game_loop, newgame, gameerr, saveload::{game_load, Config}};
+use crate::{game_loop, newgame, saveload::{game_load, game_save, Config}};
 
 // 主菜单命令
 pub fn menu_command(command: &str, state: &mut Config) {
@@ -14,15 +14,15 @@ pub fn menu_command(command: &str, state: &mut Config) {
             println!("exit  退出游戏");
         }
         "new" => {
-            let new_state = newgame::newgame();
+            let ingame: i64 = 0;
+            let new_state = newgame::newgame(ingame);
             *state = new_state;
-            gameerr::broken_save(state.month);
             game_loop(state);
             }
         "load" => {
-            if let Some(new_state) = game_load() {
+            let ingame: i64 = 0;
+            if let Some(new_state) = game_load(ingame) {
                 *state = new_state;
-                gameerr::broken_save(state.month);
                 game_loop(state);
             }
         }
@@ -47,6 +47,7 @@ pub fn game_command(command: &str, state: &mut Config) {
             println!("info  显示游戏信息");
             println!("new   新建游戏");
             println!("load  加载游戏");
+            println!("save  保存游戏");
             println!("next  进入下一回合");
             println!("exit  退出游戏");
         }
@@ -55,24 +56,27 @@ pub fn game_command(command: &str, state: &mut Config) {
         }
         "new" => {
             if confirm("确认要开始新游戏吗? 未保存的数据将会丢失") {
-                let new_state = newgame::newgame();
+                let ingame: i64 = 1;
+                let new_state = newgame::newgame(ingame);
                 *state = new_state;
-                gameerr::broken_save(state.month);
                 game_loop(state);
             }
         }
         "load" => {
             if confirm("确认要加载其他存档吗? 未保存的数据将会丢失") {
-                if let Some(new_state) = game_load() {
+                let ingame: i64 = 1;
+                if let Some(new_state) = game_load(ingame) {
                     *state = new_state;
-                    gameerr::broken_save(state.month);
                     game_loop(state);
                 }
             }
         }
+        "save" => {
+            let ingame: i64 = 1;
+            game_save(&state, ingame);
+        }
         "next" => {
             if confirm("确认要进入下一回合吗?") {
-                gameerr::broken_save(state.month);
                 state.month += 3;
                 if state.month > 12 {
                     state.years += 1;
