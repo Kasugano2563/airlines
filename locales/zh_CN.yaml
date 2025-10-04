@@ -1,0 +1,9 @@
+# 主菜单
+menu: "Airlines 主菜单"
+
+# 系统错误
+error_reading_row: "读取行错误"
+
+# 存档错误
+broken_save_1: "该游戏存档已损坏! 无法加载!"
+broken_save_2: "该游戏状态已损坏! 无法保存!"

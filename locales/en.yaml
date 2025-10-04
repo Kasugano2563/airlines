@@ -1,0 +1,9 @@
+# Menu
+menu: "Airlines Menu"
+
+# System Error
+error_reading_row: "Error reading row"
+
+# Game Error
+broken_save_1: "The save file is corrupted! Cannot load!"
+broken_save_2: "The game state is corrupted! Cannot be saved!"
