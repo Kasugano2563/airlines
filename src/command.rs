@@ -1,17 +1,25 @@
 use std::{io::{self, stdout, Write}, process::exit};
-use crate::{game_loop, newgame, saveload::{game_load, game_save, Config}};
+use rust_i18n::t;
 
-// 主菜单命令
+use crate::{game_loop, get_system_locale, newgame, saveload::{game_load, game_save, Config}};
+
+rust_i18n::i18n!("locales", fallback = "en");
+
+// Menu commmand
 pub fn menu_command(command: &str, state: &mut Config) {
-    // 命令处理逻辑
+    // Set locale
+    let locale = get_system_locale();
+    rust_i18n::set_locale(&locale);
+
+    // Command processing
     match command {
         "help" => {
-            println!("Airlines 游戏, 版本 0.0.1a\n");
-            println!("----命令列表----\n");
-            println!("help  显示该列表");
-            println!("new   新建游戏");
-            println!("load  加载游戏");
-            println!("exit  退出游戏");
+            println!("{}", t!("game_info"));
+            println!("{}", t!("command_list_title"));
+            println!("{}", t!("help_help"));
+            println!("{}", t!("help_new"));
+            println!("{}", t!("help_load"));
+            println!("{}", t!("help_exit"));
         }
         "new" => {
             let ingame: i64 = 0;
@@ -30,26 +38,30 @@ pub fn menu_command(command: &str, state: &mut Config) {
             exit(0);
         }
         _ => {
-            println!("未知命令: {}", command);
-            println!("输入 'help' 查看可用命令");
+            println!("{}: {}", t!("unknown_command_1"), command);
+            println!("{}", t!("unknown_command_2"));
         }
     }
 }
 
-// 游戏内命令
+// In game command
 pub fn game_command(command: &str, state: &mut Config) {
-    // 命令处理逻辑
+    // Set locale
+    let locale = get_system_locale();
+    rust_i18n::set_locale(&locale);
+    
+    // Command processing
     match command {
         "help" => {
-            println!("Airlines 游戏, 版本 0.0.1a\n");
-            println!("----命令列表----\n");
-            println!("help  显示该列表");
-            println!("info  显示游戏信息");
-            println!("new   新建游戏");
-            println!("load  加载游戏");
-            println!("save  保存游戏");
-            println!("next  进入下一回合");
-            println!("exit  退出游戏");
+            println!("{}", t!("game_info"));
+            println!("{}", t!("command_list_title"));
+            println!("{}", t!("help_help"));
+            println!("{}", t!("help_info"));
+            println!("{}", t!("help_new"));
+            println!("{}", t!("help_load"));
+            println!("{}", t!("help_save"));
+            println!("{}", t!("help_next"));
+            println!("{}", t!("help_exit"));
         }
         "info" => {
             println!("现在是 {}.{} , 金钱 {}", state.years, state.month, state.money);
@@ -89,8 +101,8 @@ pub fn game_command(command: &str, state: &mut Config) {
             exit(0);
         }
         _ => {
-            println!("未知命令: {}", command);
-            println!("输入 'help' 查看可用命令");
+            println!("{}: {}", t!("unknown_command_1"), command);
+            println!("{}", t!("unknown_command_2"));
         }
     }
 }
@@ -114,7 +126,7 @@ fn confirm(prompt: &str) -> bool {
                 }
             }
             Err(error) => {
-                eprintln!("读取输入时发生错误: {}", error);
+                eprintln!("{}: {}", t!("error_reading_row"), error);
                 return false;
             }
         }

@@ -11,7 +11,7 @@ pub fn get_system_locale() -> String {
     lang.split('.') .next().unwrap_or("en").to_string()
 }
 
-// 主菜单
+// Menu
 fn main() {
     let locale = get_system_locale();
     rust_i18n::set_locale(&locale);
@@ -44,7 +44,7 @@ fn main() {
     }
 }
 
-// 游戏循环
+// Game loop
 fn game_loop(state: &mut Config) {
     let locale = get_system_locale();
     rust_i18n::set_locale(&locale);

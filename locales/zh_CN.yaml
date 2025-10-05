@@ -7,3 +7,18 @@ error_reading_row: "读取行错误"
 # 存档错误
 broken_save_1: "该游戏存档已损坏! 无法加载!"
 broken_save_2: "该游戏状态已损坏! 无法保存!"
+
+# 命令帮助
+game_info: "Airlines 游戏, 版本 0.0.5a\n"
+command_list_title: "----命令列表----\n"
+help_help: "help   显示该列表"
+help_new: "new    新建游戏"
+help_load: "load   加载游戏"
+help_exit: "exit   退出游戏"
+# 游戏内命令
+help_info: "info   显示游戏信息"
+help_save: "save   保存游戏"
+help_next: "next   进入下一回合"
+
+unknown_command_1: "未知命令"
+unknown_command_2: "输入 'help' 查看可用命令"

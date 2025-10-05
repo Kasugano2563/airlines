@@ -7,3 +7,19 @@ error_reading_row: "Error reading row"
 # Game Error
 broken_save_1: "The save file is corrupted! Cannot load!"
 broken_save_2: "The game state is corrupted! Cannot be saved!"
+
+# Command Help
+game_info: "Airlines Game, Ver 0.0.5a\n"
+command_list_title: "----Command List----\n"
+help_help: "help   Display this list"
+help_new: "new    Create a new game"
+help_load: "load   Loading the game"
+help_exit: "exit   Exit the game"
+# In game command help
+help_info: "info   Display game information"
+help_save: "save   Save Game"
+help_next: "next   Enter the next round"
+
+
+unknown_command_1: "Unknown command"
+unknown_command_2: "Type 'help' to see available commands"
